@@ -1,13 +1,17 @@
 const axios = require('axios');
 const {AXIOS_CONFIG} = require('../../config/index');
 
-module.exports = async (result) => {
+const RETRY_INT = 10 * 1000;
+async function notifyBuildResult(result) {
   try {
-    await axios.post('/notify-build-result', {
+    await axios.post('/notify_build_result', {
       ...result
     }, AXIOS_CONFIG)
   } catch (error) {
-    console.log('Не удалось передать данные на сервер, агент будет убит');
+    console.error(`Ошибка уведомления сервера, повторить через ${RETRY_INT}мс`, result, error);
+    setTimeout(() => notifyBuildResult(result), RETRY_INT);
     process.exit();
   }
 };
+
+module.exports = notifyBuildResult;

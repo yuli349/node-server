@@ -2,10 +2,9 @@ const axios = require('axios');
 const { AXIOS_CONFIG } = require('../../config/index');
 const getConfig = require('./getConfig');
 
-intervalTime = 10000;
+const BUILD_INT = 10 * 1000;
 
 getBuilds = async () => {
-  let response;
   try {
 
     // получить билды
@@ -25,8 +24,8 @@ module.exports = async () => {
   setInterval(() => {
     if (global.builds.length === 0) {
       getConfig();
-      console.log('Запрос за новыми билдами', intervalTime);
+      console.log('Запрос за новыми билдами каждые ', BUILD_INT, ' мс');
       getBuilds();
     }
-  }, intervalTime)
+  }, BUILD_INT)
 };

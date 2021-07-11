@@ -9,12 +9,12 @@ module.exports = async (req, res) => {
       console.log({port: Number(PORT), available: true});
       console.log(AXIOS_CONFIG);
       //регистрируем агента
-      await axios.post('/notify-agent', {port: Number(PORT), available: global.available}, AXIOS_CONFIG);
+      await axios.post('/notify_agent', {port: Number(PORT), available: global.available}, AXIOS_CONFIG);
 
     } catch (error) {
       console.log(error);
-      console.log('Не удалось передать данные на сервер, агент будет убит');
-      process.exit();
+      console.log('Ошибка регистрации на сервере');
+      process.exit(1);
     }
 
   } catch (error) {

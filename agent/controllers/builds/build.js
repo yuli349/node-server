@@ -3,7 +3,7 @@ const cloneRepo = require('./clone');
 const checkoutRepo = require('./checkout');
 const { join } = require('path');
 const Promise = require("bluebird");
-const execAffffsync = Promise.promisify(require('child_process').exec, {multiArgs: true});
+const execAsyncAgent = Promise.promisify(require('child_process').exec, {multiArgs: true});
 
 module.exports = async ({id, commitHash, repoName, buildCommand, mainBranch}) => {
   console.log(repoName);
@@ -18,9 +18,9 @@ module.exports = async ({id, commitHash, repoName, buildCommand, mainBranch}) =>
   const repo = repoName.split('/');
   const cwd = join(__dirname, '../../', '/Jason', repo[repo.length - 1]);
 
-  // console.log(cwd);
+  console.log(cwd);
 
-  // console.log('build command: ' + buildCommand);
+  console.log('build command: ' + buildCommand);
   let stdout = '';
   let stderr = '';
 
@@ -32,7 +32,7 @@ module.exports = async ({id, commitHash, repoName, buildCommand, mainBranch}) =>
   let success = false;
   let buildLog = '';
   try {
-    buildLog = await execAffffsync(buildCommand, buildDirConfig);
+    buildLog = await execAsyncAgent(buildCommand, buildDirConfig);
     buildLog = buildLog[0];
     success = true;
   }
